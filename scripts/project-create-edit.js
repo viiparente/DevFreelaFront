@@ -1,25 +1,12 @@
-window.onload = function() {
-    // Type: 'create' || 'edit'
-    const screenType = 'create';
+// Pega os parametros da URL
+const urlSearchParams = new URLSearchParams(window.location.search);
+const params = Object.fromEntries(urlSearchParams.entries());
 
-    // MODO CRIAR
-    if(screenType == 'create') {
-        document.querySelector('#main-title').innerText = "Vamos cadastrar seu novo projeto!";
-        document.querySelector('#action-button').innerText = "Cadastrar";
-    }
+//se tiver o parametro na url (?id=0) e edit, se nao e create
+// Type: 'create' || 'edit' 
+const screenType = params.id ? 'edit' : 'create';
 
-    // // MODO EDITAR
-    // if(screenType == 'edit') {
-    //     document.querySelector('#main-title').innerText = "Editar projeto";
-    //     document.querySelector('#action-button').innerText = "Salvar";
-    // }
-
-    // Metodo de cadastrar
-    // Construir a massa dados do payload
-    // Enviar os dados para a API e redirecionar para a listagem
-}
-
-function cadastrar() {
+function createOrEdit() {
     // Inicia a massa de dados (payload)
     let payload = {
         title: document.querySelector("#title").value,
@@ -28,9 +15,9 @@ function cadastrar() {
         idClient: "1"
     }
 
-    // Enviar para API
-    fetch("https://630bdb2883986f74a7b7871c.mockapi.io/api/projects", {
-        method: 'POST',
+    // Enviar para API enviando como (templates string)
+    fetch(`https://630bdb2883986f74a7b7871c.mockapi.io/api/projects${screenType === 'edit' ? ('/' + params.id) : ''}`, {
+        method: screenType === 'edit' ? 'PUT' : 'POST',
         body: JSON.stringify(payload),
         headers: {
             'Content-Type': 'application/json'
@@ -38,6 +25,31 @@ function cadastrar() {
     })
     .then(response => response.json())
     .then(response => {
-        alert('Cadastrado com sucesso!');
+        if(screenType === 'edit'){
+            alert('Editado com sucesso!');
+        } else {
+            alert('Cadastrado com sucesso!');
+        }
     })
+    .catch(error =>{
+        alert('Erro no Servidor')
+    })
+}
+
+window.onload = function() {
+    setScreenTypeTexts();
+}
+
+function setScreenTypeTexts(){
+    // MODO CRIAR
+    if(screenType == 'create') {
+        document.querySelector('#main-title').innerText = "Vamos cadastrar seu novo projeto!";
+        document.querySelector('#action-button').innerText = "Cadastrar";
+    }
+
+    // MODO EDITAR
+    if(screenType == 'edit') {
+        document.querySelector('#main-title').innerText = "Editar projeto";
+        document.querySelector('#action-button').innerText = "Salvar";
+    }
 }
