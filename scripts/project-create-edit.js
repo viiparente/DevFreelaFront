@@ -12,7 +12,7 @@ function createOrEdit() {
         title: document.querySelector("#title").value,
         totalCost: document.querySelector("#totalCost").value,
         description: document.querySelector("#description").value,
-        idClient: "1"
+        idClient: localStorage.getItem("idClient")
     }
 
     // Enviar para API enviando como (templates string)
