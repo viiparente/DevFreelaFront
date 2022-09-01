@@ -30,6 +30,8 @@ function createOrEdit() {
         } else {
             alert('Cadastrado com sucesso!');
         }
+
+        window.location.href = "list.html";
     })
     .catch(error =>{
         alert('Erro no Servidor')
@@ -38,6 +40,19 @@ function createOrEdit() {
 
 window.onload = function() {
     setScreenTypeTexts();
+    fillInputs();
+}
+
+function fillInputs() {
+    if(screenType === 'edit'){
+        fetch(`https://630bdb2883986f74a7b7871c.mockapi.io/api/projects/${params.id}`)
+        .then(response => response.json())
+        .then(project => {
+            document.querySelector("#title").value = project.title;
+            document.querySelector("#totalCost").value = project.totalCost;
+            document.querySelector("#description").value = project.description;
+        })
+    }
 }
 
 function setScreenTypeTexts(){
