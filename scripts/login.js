@@ -57,7 +57,11 @@ function cadastrar() {
         })
     })
     .catch(error =>{
-        alert('Erro no Servidor')
+        Swal.fire(
+            'Algo de errado...',
+            'Erro no Servidor!',
+            'error'
+        )
     })
 
 }

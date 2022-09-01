@@ -25,16 +25,23 @@ function createOrEdit() {
     })
     .then(response => response.json())
     .then(response => {
-        if(screenType === 'edit'){
-            alert('Editado com sucesso!');
-        } else {
-            alert('Cadastrado com sucesso!');
-        }
-
-        window.location.href = "list.html";
+        Swal.fire({
+            title: 'Bom Trabalho!',
+            text: screenType === 'edit' ? 'Editado com sucesso!' : 'Cadastrado com sucesso!',
+            icon: 'success',
+            confirmButtonText: 'Ok!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "list.html";
+            }
+        })
     })
     .catch(error =>{
-        alert('Erro no Servidor')
+        Swal.fire(
+            'Algo de errado...',
+            'Erro no Servidor!',
+            'error'
+        )
     })
 }
 
