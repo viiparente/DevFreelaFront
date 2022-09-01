@@ -21,6 +21,11 @@ function goToEdit(id) {
 }
 
 function deleteProject(id){
+    
+    if(!confirm('Tem certeza que quer deletar?'))
+        return;
+
+   
     fetch(`https://630bdb2883986f74a7b7871c.mockapi.io/api/projects/${id}`, {
         method: 'DELETE'
     })
